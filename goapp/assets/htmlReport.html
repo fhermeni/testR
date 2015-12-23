@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{{.Owner}}/{{.Repo}}</title>		
+		<link rel="stylesheet" title="yeti" href="/assets/css/bootstrap-yeti.min.css">		
+		<link rel="stylesheet" title="yeti" href="/assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" title="yeti" href="/assets/css/testr.css">
+	</head>
+	<body>
+		{{$s := .Last.Summary}}
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<span class="navbar-brand">
+						<a href="/">TestR</a>
+					</span>											
+					<span class="navbar-brand">
+						<a href="https://github.com/{{$.Owner}}/{{$.Repo}}"><i class="fa fa-github"></i></a>
+						{{.Owner}} / {{.Repo}}
+					</span>
+				</div>
+				<div class="collapse navbar-collapse">
+					
+				<form class="navbar-form navbar-left">
+				<div class="input-group">
+					<span class="input-group-addon">
+				    <i class="fa fa-question" onclick="$('#help').modal().show();"></i>
+				    </span>				    				   			   
+					<input type="text" class="form-control input-sm" id="filter" onchange="reduce()" onkeyup="this.onchange();">					
+					<span class="input-group-btn">					
+						<button type="button" class="btn btn-default btn-sm" onclick="reduce()"><i class="glyphicon glyphicon-filter"></i> filter</button>
+ 						<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+ 						<span class="caret"></span>
+ 						<span class="sr-only">Toggle Dropdown</span>
+ 						</button>
+        				<ul class="dropdown-menu dropdown-menu-right filter">
+          				<li><a class="filter" onclick="filterOn('is:success')">succeeding only</a></li>
+          				<li><a class="filter" onclick="filterOn('is:failure')">failing only </a></li>
+          				<li><a class="filter" onclick="filterOn('is:slow')">slower only</a></li>
+          				<li><a class="filter" onclick="filterOn('is:fast')">faster only</a></li>
+          				<li role="separator" class="divider"></li>
+          				<li><a class="filter" onclick="filterOn('was:success')">succeeded</a></li>
+          				<li><a class="filter" onclick="filterOn('was:failure')">failed</a></li>
+          				<li role="separator" class="divider"></li>
+          				<li><a class="filter" onclick="filterOn('')">none</a></li>
+        				</ul>
+					</span>					
+				</div>
+				</form>
+				<ul class="nav navbar-nav navbar-right nav-{{suiteStatus .Last}}">
+						<li class="navbar-text">Summary</li>
+						<li class="navbar-text" title="successful tests">{{$s.Success}} <i class="fa fa-check"></i></li>
+						<li class="navbar-text" title="faster tests">{{$s.Speedup}} <i class="fa fa-level-up" ></i></li>
+						<li class="navbar-text" title="slow tests">{{$s.Slowdown}} <i class="fa fa-level-down" ></i></li>
+						<li role="separator" class="divider"></li>
+						<li class="navbar-text" title="failing tests">{{$s.Failures}} <i class="fa fa-exclamation-circle" ></i></li>
+						<li class="navbar-text" title="skipped tests">{{$s.Skip}} <i class="fa fa-eye-slash" ></i></li>
+				</ul>
+				</div>				
+			</div>
+		</nav>		
+		{{$p := .}}
+		<div class="container">		
+			{{$s := .Last.Summary}}
+			{{if len $p.Tests}}
+			<div class="summary summary-{{suiteStatus .Last}}">			
+			<h4 class="text-{{suiteStatus .Last}}">				
+				{{.Last.ShortLog}}
+				<br/><br/>
+			</h4>
+
+			<h5>
+			<a href="https://github.com/{{$p.Owner}}/{{$p.Repo}}/commit/{{.Last.Sha1}}?diff=split">
+			<i class="fa fa-github"></i>
+			Commit {{abbrv .Last.Sha1}}</a>
+			</h5>
+						
+			{{if eq .Last.Author.Email .Last.Committer.Email}}
+			<h5>
+			<a href="mailto:{{.Last.Author.Email}}"><img alt="avatar logo" src="{{.Last.Author.AvatarUrl}}" class="logo"> {{.Last.Author.Name}}</a> authored and committed.
+			</h5>
+			{{else}}
+			<h5>
+			<a href="mailto:{{.Last.Author.Email}}"><img alt="avatar logo" src="{{.Last.Author.AvatarUrl}}" class="logo"> {{.Last.Author.Name}}</a> authored.<br>
+			<a href="mailto:{{.Last.Committer.Email}}"><img alt="avatar logo" src="{{.Last.Committer.AvatarUrl}}" class="logo"> {{.Last.Committer.Name}}</a> committed
+			</h5>
+			{{end}}
+
+			{{else}}
+				<h3 class="text-center">No commits available</h3>
+			{{end}}
+
+			{{if $p.Prev}}		
+			{{$old := $p.Prev.Summary}}	
+
+			</div>
+			{{end}}
+		</div>
+			{{if len $p.Tests}}
+			<table class="table table-hover" id="report">
+				<thead>
+					<tr class="sticky">
+						<th>Test name</th>						
+						{{range .Commits}}							
+						<th>
+							<a href="https://github.com/{{$p.Owner}}/{{$p.Repo}}/commit/{{.Sha1}}?diff=split">{{abbrv .Sha1}}</a>
+						</th>
+						{{end}}
+					</tr>
+				</thead>
+				<tbody>				
+				{{range $k,$v := $p.Tests}}								
+				{{$trend := $v}}
+				<tr data-label="{{$k}} {{testLabels $trend}} {{testLabel $p.Last $k}}">					
+					<td title="{{$k}}">{{shorterName $k}}</td>
+					{{range $v}}
+						<td class="{{statusClass $trend .}}">
+						{{if eq .Status 3}}
+							<a href="#" data-test="{{$k}}" data-output="{{.Output}}" onclick="showOutput(this)">{{duration .Duration}}</a>
+						{{else}}
+							{{duration .Duration}}
+						{{end}}
+						</td>
+					{{end}}					
+				</tr>
+				{{end}}
+				</tbody>
+			</table>
+			{{end}}		
+
+	<div id="help" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-body">
+			<fieldset>
+			<legend>Filtering options</legend>			
+			<p>The filtering only exhibits the tests that match every predicates.
+				The support predicated are:
+				</p>
+				<ul>
+					<li>
+						<code>is:(success|failure|skip|slow|fast)</code>
+						Show only tests that <i>currently</i> <code>pass</code>, <code>fail</code>, ...
+					</li>
+					<li>
+						<code>was:(success|failure|skip|slow|fast)</code>
+						Show only tests that <i>at a moment</i> was <code>passing</code>, <code>failing</code>, ...
+					</li>
+				</ul>		
+			</fieldset>
+
+			<p>a <b><i>slow</i> test</b>: passes with a duration greater than the upper quartile.</p>
+			<p><b><i>fast</i> test</b>: a passing test with a duration lower than the lower quartile.</p>
+		</div>		
+		</div>
+	</div>
+	</div>
+	<div id="output" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title"></h4>
+		</div>
+		<div class="modal-body">
+			<pre><code></code></pre>			
+		</div>		
+		</div>
+	</div>
+	</div>	
+	<footer class="hidden-print">
+	<div class="container">
+		
+		<div class="lead">
+		<div class="pull-right">
+			<small class="text-muted">© <a href="mailto:fabien.hermenier@unice.fr">Fabien Hermenier</a> 2015</small>
+		</div>
+		</div>		
+	</div>
+	</footer>
+	<script src="/assets/js/jquery-1.11.3.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/testr.js"></script>
+	</body>
+</html>

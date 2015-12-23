@@ -1,0 +1,61 @@
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{{.User.Name}}</title>		
+		<link rel="stylesheet" title="yeti" href="/assets/css/bootstrap-yeti.min.css">
+		<link rel="stylesheet" title="yeti" href="/assets/css/testr.css">
+		<link rel="stylesheet" title="yeti" href="/assets/font-awesome/css/font-awesome.min.css">
+	</head>
+	<body>
+		{{$p := .}}
+		<div class="container">
+			<div class="page-header">
+			<h2>
+			<div class="row">
+				<div class="col-md-6">					
+						<a href="https://github.com/{{$p.User.Name}}"><i class="fa fa-github"></i></a>
+						{{.User.Name}}
+				</div>
+			</div>						
+			</h2>
+			</div>
+		
+			{{if len $p.User.Repos}}
+			<table class="table table-hover table-big" id="report">
+				<thead>
+					<tr>
+						<th>Repository</th>						
+						<th>Last commit</th>
+						<th>Tests</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>				
+				{{range $n,$s := $p.Summaries}}								
+				{{$ts := $s}}
+				<tr>					
+					<td><a href="/repos/{{$p.User.Name}}/{{$n}}">{{$p.User.Name}} / {{$n}}</a></td>					
+					<td></td>					
+					<td>{{$s.Total}}</td>
+					<td><span class="text-center label label-{{if eq $s.Success $s.Total}}success{{else}}danger{{end}}">{{pct $s.Success $s.Total}} %</span></td>
+				</tr>
+				{{end}}
+				</tbody>
+			</table>
+			{{else}}
+			<h3 class="text-center">No repositories</h3>
+			{{end}}
+		</div>
+
+	<footer class="hidden-print">
+	<div class="container">
+		<div class="pull-right">
+			<div class="lead">testR <small class="text-muted">© 2015</small></div>
+		</div>
+	</div>
+	</footer>
+	<script src="/assets/js/jquery-1.11.3.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/testr.js"></script>
+	</body>
+</html>

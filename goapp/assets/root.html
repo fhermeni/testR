@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TestR</title>		
+		<link rel="stylesheet" title="yeti" href="/assets/css/bootstrap-yeti.min.css">
+		<link rel="stylesheet" title="yeti" href="/assets/css/testr.css">
+		<link rel="stylesheet" title="yeti" href="/assets/font-awesome/css/font-awesome.min.css">
+	</head>
+	<body>		
+		<div class="container">	
+
+		<div class="jumbotron">
+		<h1>TestR <small>to visualise unit test reports</small></h1>
+		<p><a href="https://travis-ci.org"><img src="https://blog.travis-ci.com/images/travis-mascot-200px.png" class="travis-logo"/ alt="travis logo">Travis CI</a> is cool but it cannot provide a way to visualise the unit tests history.<br>
+		Using <code>TestR</code>, upload your maven surefire reports to TestR and your done !</p>		
+		</div>
+
+		<h3>How-to use testR</h3>
+		<p>You will have to customize the travis build to make it send the surefire test reports</p>
+		<ol>
+			<li>Ask a <code>TESTR_TOKEN</code> to <i>the guy</i></li>				
+			<li><a href="https://docs.travis-ci.com/user/environment-variables/">Encrypt <code>TESTR_TOKEN</code></a> to be used inside your travis build</li>
+			<li>Ask for a <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use/">Github access token</a> and encrypt it inside the environment variable <code>GH_TOKEN</code>
+			<li>Modify your <code>.travis.yml</code> to make travis upload the surefire results:
+			<pre><code>
+...
+after_success:
+- curl http://testr-1154.appspot.com/assets/testR.py |python 			
+			</code>
+			</pre>			
+			</li>
+		</ol>	
+
+		<p>Suspicious about testR.py ? <a href="http://testr-1154.appspot.com/assets/testR.py">check its content</a></p>
+
+		<h3>If I don't know <i>the guy</i> ?</h3>
+		<p>Then you are probably doomed.
+		I cannot afford myself to exceed the free quota of Google app engine. So there is no way to make me open TestR to everyone.
+		</p>
+		</div>
+	<footer class="hidden-print">
+	<div class="container">
+		<div class="lead">
+		<div class="pull-right">
+			<small class="text-muted">© <a href="mailto:fabien.hermenier@unice.fr">Fabien Hermenier</a> 2015</small>
+		</div>
+		</div>		
+	</div>
+	</footer>
+	<script src="/assets/js/jquery-1.11.3.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/testr.js"></script>
+	</body>
+</html>

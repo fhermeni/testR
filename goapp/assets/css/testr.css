@@ -1,0 +1,78 @@
+.summary {
+	/*border: solid 1px #eeeeee;*/
+	border-left: solid 10px;
+	padding-left: 10px;
+	margin-top: 70px;
+}
+
+.summary-success {
+	border-color: #43ac6a;
+}
+
+.summary-danger {
+	border-left-color: #f04124;
+}
+
+.nav-success {
+	background: #43ac6a;	
+}
+
+.nav-danger {
+	background: #f04124;	
+}
+
+table {
+	margin-top: 3em;
+}
+
+.table-big {
+	font-size: inherit;
+}
+
+.logo {
+	width: 20px;
+}
+
+.travis-logo {
+	width: 32px;
+}
+
+.title {
+	font-size: 32px;
+}
+
+.dropdown-menu>li>a {
+	padding: 3px 20px;
+}
+
+
+.dropdown-menu .divider {
+	background-color: #eee;
+	margin: 2px;
+}
+
+/* filter in the navbar */
+.navbar .btn {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.navbar-form .form-control {
+    height: auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.navbar-nav>li {
+    padding-bottom: 6px;
+}
+
+.sticky {
+	background: white;
+}
+.fixed {
+  position: fixed;
+  top:70px;
+  	left:0;
+  width: 100%;
+ }

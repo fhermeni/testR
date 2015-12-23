@@ -67,6 +67,12 @@ func (s Store) Authorize(owner, repos, token string) error {
 	return model.ErrPermissionDenied
 }
 
+func (s Store) Owners() ([]model.Owner, error) {
+	owners := make([]model.Owner, 0, 0)
+	_, err := datastore.NewQuery("Owner").GetAll(s.ctx, &owners)
+	return owners, err
+}
+
 func OwnerKey(ctx context.Context, name string) *datastore.Key {
 	return datastore.NewKey(ctx, "Owner", name, 0, nil)
 }

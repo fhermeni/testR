@@ -22,7 +22,18 @@
 				</div>
 				<div class="collapse navbar-collapse">
 					
-				<form class="navbar-form navbar-left">
+
+				<ul class="nav navbar-nav navbar-right nav-{{suiteStatus .Last}}">
+						<li class="navbar-text">Summary</li>
+						<li title="successful tests"><a href="#" onclick="filterOn('is:success')">{{$s.Success}} <i class="fa fa-check"></i></a></li>
+						<li title="faster tests"><a href="#" onclick="filterOn('is:fast')">{{$s.Speedup}} <i class="fa fa-level-up" ></i></a></li>
+						<li title="slow tests"><a href="#" onclick="filterOn('is:slow')">{{$s.Slowdown}} <i class="fa fa-level-down" ></i></a></li>
+						<li class="divider"></li>
+						<li title="failing tests"><a href="#" onclick="filterOn('is:failure')">{{$s.Failures}} <i class="fa fa-exclamation-circle" ></i></a></li>
+						<li title="skipped tests"><a href="#" onclick="filterOn('is:skip')">{{$s.Skip}} <i class="fa fa-eye-slash" ></i></a></li>
+				</ul>
+
+				<form class="navbar-form">
 				<div class="input-group">
 					<span class="input-group-addon">
 				    <i class="fa fa-question" onclick="$('#help').modal().show();"></i>
@@ -48,15 +59,6 @@
 					</span>					
 				</div>
 				</form>
-				<ul class="nav navbar-nav navbar-right nav-{{suiteStatus .Last}}">
-						<li class="navbar-text">Summary</li>
-						<li class="navbar-text" title="successful tests">{{$s.Success}} <i class="fa fa-check"></i></li>
-						<li class="navbar-text" title="faster tests">{{$s.Speedup}} <i class="fa fa-level-up" ></i></li>
-						<li class="navbar-text" title="slow tests">{{$s.Slowdown}} <i class="fa fa-level-down" ></i></li>
-						<li role="separator" class="divider"></li>
-						<li class="navbar-text" title="failing tests">{{$s.Failures}} <i class="fa fa-exclamation-circle" ></i></li>
-						<li class="navbar-text" title="skipped tests">{{$s.Skip}} <i class="fa fa-eye-slash" ></i></li>
-				</ul>
 				</div>				
 			</div>
 		</nav>		

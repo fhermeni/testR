@@ -14,8 +14,6 @@ func init() {
 	log.Println("Starting the daemon")
 
 	backend := datastore.NewProvider()
-	//st := backend.NewStore(nil)
-	//st.Authorize("btrplace", "scheduler", "AAAAAAsKKFKZJKJNZ9298428")
 
 	//Connect the assets
 	rest, err := rest.NewEndPoints(backend, "assets")

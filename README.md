@@ -1,6 +1,7 @@
 # testR
 
 Web-application to monitor test trends of maven poject hosting on Github
+Demo page: http://testr-1154.appspot.com/repos/btrplace/scheduler/
 
 ## TODO
 - Short log cut a sentence like (.travis.yml)
@@ -13,6 +14,8 @@ Web-application to monitor test trends of maven poject hosting on Github
 - gziping
 - cutest UI		
 	- static table header
-# install
 
-- stay tuned  
+## How to install
+
+- download [golang](https://golang.org/)
+- install dependencies the way you want/ the way you can

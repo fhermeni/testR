@@ -45,10 +45,28 @@ table {
 	padding: 3px 20px;
 }
 
+.navbar-default .navbar-nav>li>a:hover {
+    background-color: inherit;
+    text-decoration: underline;
+}
+
 
 .dropdown-menu .divider {
 	background-color: #eee;
 	margin: 2px;
+}
+
+/* longer filter box */
+.navbar-form .input-group {
+    display: table;    
+}
+
+/*.navbar-form .input-group {
+	display: table;
+}*/
+
+.navbar-form .input-group .input-group-addon {
+	width: 1%;
 }
 
 /* filter in the navbar */

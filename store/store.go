@@ -25,6 +25,7 @@ type Store interface {
 	NewOwner(u model.Owner) error
 	Owner(n string) (model.Owner, error)
 	DelOwner(u model.Owner) error
+	Owners() ([]model.Owner, error)
 }
 
 //Provider specifies a datastore provider
